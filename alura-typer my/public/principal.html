@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Alura Typer</title>
+   	<link rel="stylesheet" href="css/libs/materialize.min.css">
+   	 <link href="css/libs/google-fonts.css" rel="stylesheet">
+   	<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+   <div class="container">
+	   	 <!-- Seja bem vindo ao curso de jQuery :) -->
+	    <h1 class="center">Alura Typer</h1>
+
+	    <p class="frase center">Frase com algumas palavras frase com algumas palavras</p>
+	    <ul class="center">
+	    	<li>
+	    		<i class="small material-icons icones">description</i>
+	    		<span id="tamanho-frase">0</span> palavras</li>
+	    	<li>
+	    		<i class="material-icons icones">query_builder</i>
+	    		<span id="tempo-restante">10</span> segundos</li>
+	    </ul>
+
+	    <textarea class="campo-digitacao" name="palavras" rows="10" cols="50"></textarea>
+		
+		<div class="botoes">
+		    <a id="botao-reiniciar" class="btn-floating btn-large waves-effect waves-light red">
+		        <i class="material-icons icones">restore</i>
+		    </a>
+		</div>
+
+	     <ul class="center">
+	    	<li>
+	    		
+	    		<span id="contador-caracteres">0</span> caracteres</li>
+	    	<li><span id="contador-palavras">0</span> palavras</li>
+	    </ul>
+   </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
