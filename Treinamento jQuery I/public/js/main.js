@@ -39,6 +39,7 @@ function inicializaCronometro() {
                 //_textarea.css('background-color', 'lightgray');
                 _textarea.addClass('campo-desativado');
                 //_textarea.toggleClass("campo-desativado");
+                insereNoPlacar();
             }
         }, 1000);
     });    
@@ -61,14 +62,14 @@ let frase = $('.frase').text();
 _textarea.on('input', () => {
     
     let digitado = _textarea.val();
-    let comparavel = frase.substr(0, digitado.length);
+    //let comparavel = frase.substr(0, digitado.length);
     
-    if(digitado == comparavel){
-        _textarea.removeClass("borda-vermelha");
-        _textarea.addClass("borda-verde");
-    }else{
-        _textarea.addClass("borda-vermelha");
-        _textarea.removeClass("borda-verde");
+    if ( frase.startsWith(digitado) ){
+      _textarea.removeClass("borda-vermelha");
+      _textarea.addClass("borda-verde");
+    } else {
+      _textarea.addClass("borda-vermelha");
+      _textarea.removeClass("borda-verde");
     }
 
 
