@@ -78,7 +78,7 @@ _textarea.on('input', () => {
 
 _textarea.blur( () => {
     console.log("blur"); 
-    console.clear();
+    //console.clear();
 });
 
 
