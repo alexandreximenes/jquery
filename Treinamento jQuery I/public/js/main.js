@@ -30,6 +30,7 @@ function inicializaContadores() {
 function inicializaCronometro() {
     let _tempoRestante = $("#tempo-digitacao").text();
     _textarea.one('focus', () => {
+        ajustaAlturaTextArea();
         let _tempo = setInterval( () => {
             console.log(_tempoRestante--);
             $("#tempo-digitacao").text(_tempoRestante);
@@ -56,6 +57,7 @@ function reiniciaJogo() {
      _textarea.removeClass("campo-desativado");
      _textarea.removeClass("borda-vermelha");
      _textarea.removeClass("borda-verde");
+     scrollH1();
 }
 
 let frase = $('.frase').text();

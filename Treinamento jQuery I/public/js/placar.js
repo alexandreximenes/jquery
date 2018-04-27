@@ -49,13 +49,3 @@ function removeLinha(){
 
 }
 
-function scrollPlacar(){
-    var posicaoPlacar = $(".placar").offset().top;
-    
-    $("html").animate(
-    {
-        scrollTop: posicaoPlacar + "px"
-    }, 1000);
-
-    
-}
