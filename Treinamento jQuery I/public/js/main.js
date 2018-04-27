@@ -15,6 +15,10 @@ function atualizaTamanhoFrase() {
     let _tamanhoFrase = $("#tamanho-frase").text(_numPalavras);
 }
 
+function atualizaTempoInicial(tempo){
+    $('#tempo-digitacao').text(tempo);
+}
+
 function inicializaContadores() {
     // evento de caractere e palavras
     _textarea.on('input', () => {
@@ -28,8 +32,8 @@ function inicializaContadores() {
 
 //Cronometro 
 function inicializaCronometro() {
-    let _tempoRestante = $("#tempo-digitacao").text();
     _textarea.one('focus', () => {
+        let _tempoRestante = $("#tempo-digitacao").text();
         ajustaAlturaTextArea();
         let _tempo = setInterval( () => {
             console.log(_tempoRestante--);
@@ -43,6 +47,11 @@ function inicializaCronometro() {
                 insereNoPlacar();
             }
         }, 1000);
+
+        $('#botao-frase').click( () => {
+            clearInterval(_tempo);
+            inicializaCronometro();
+        });
     });    
 }
 
@@ -51,7 +60,7 @@ function reiniciaJogo() {
     _textarea.val("");
     $("#contador-palavras").text(0);
     $("#contador-caracteres").text(0);
-    $("#tempo-digitacao").text(_tempoInicial);
+    $("#tempo-digitacao").text();
     inicializaCronometro();
     //_textarea.toggleClass("campo-desativado");
      _textarea.removeClass("campo-desativado");
@@ -60,9 +69,8 @@ function reiniciaJogo() {
      scrollH1();
 }
 
-let frase = $('.frase').text();
 _textarea.on('input', () => {
-    
+    let frase = $('.frase').text();
     let digitado = _textarea.val();
     //let comparavel = frase.substr(0, digitado.length);
     
@@ -73,14 +81,9 @@ _textarea.on('input', () => {
       _textarea.addClass("borda-vermelha");
       _textarea.removeClass("borda-verde");
     }
-
-
 });
 
 
-_textarea.blur( () => {
-    console.log("blur"); 
-    //console.clear();
-});
+_textarea.blur( () => console.log("blur") );
 
 
