@@ -1,3 +1,9 @@
+$('#botao-placar').click(mostraPlacar);
+
+function mostraPlacar() {
+  $(".placar").stop().slideToggle(500);
+}
+
 function insereNoPlacar(){
     let usuario = prompt("Qual seu nome ? ");
     let tbody = $('.placar').find("tbody");
@@ -7,13 +13,14 @@ function insereNoPlacar(){
     var linha = novaLinha(usuario, numPalavras);
     linha.find('.botao-remover').click(removeLinha);
 
-    console.log(linha);
-
     //Adiciona no FINAL do corpo da tabela
     //tbody.append(linha);
 
     //Adiciona no INICIO do corpo da tabela
     tbody.prepend(linha);
+
+    $(".placar").slideDown(500);
+    scrollPlacar();
 
 }
 
@@ -40,4 +47,15 @@ function removeLinha(){
     event.preventDefault();
     $(this).parent().parent().remove();
 
+}
+
+function scrollPlacar(){
+    var posicaoPlacar = $(".placar").offset().top;
+    
+    $("html").animate(
+    {
+        scrollTop: posicaoPlacar + "px"
+    }, 1000);
+
+    
 }
