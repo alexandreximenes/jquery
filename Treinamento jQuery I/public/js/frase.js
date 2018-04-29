@@ -2,22 +2,36 @@ $('#botao-frase').click(buscaFrase);
 
 function buscaFrase(){
     //Poderia ser http://localhost:3000/frases
-    $.get('/frases', (data) => {
-        fazendoExperiencias(data);
-        //Inserindo dados no localStorage
-        setLocalStorage(data);
-        console.log("\ngetLocalStorage : " + getLocalStorage());
-        
-        let frase = $('.frase');
-        let numeroAleatorio = Math.floor(Math.random() * data.length);
-        frase.text(data[numeroAleatorio].texto);
-        
-        atualizaTamanhoFrase();
-        atualizaTempoInicial(data[numeroAleatorio].tempo);
-        
-    });
+    $(".progress").show();
+    $.get("/frases", data => {
+          fazendoExperiencias(data);
+          //Inserindo dados no localStorage
+          setLocalStorage(data);
+          console.log("\ngetLocalStorage : " + getLocalStorage());
+
+          let frase = $(".frase");
+          let numeroAleatorio = Math.floor(Math.random() * data.length);
+          frase.text(data[numeroAleatorio].texto);
+
+          atualizaTamanhoFrase();
+          atualizaTempoInicial(data[numeroAleatorio].tempo);
+
+          mostrarMensagem("Busca de dados efetuada com sucesso");
+      
+    })
+    .fail(() => {
+        mostrarMensagem('Erro ao buscar dados no servidor')
+        $(".progress").hide();
+    })
+    .always( () => $('.progress').hide() );
 }
 
+function mostrarMensagem(msg) {
+    M.toast({
+      html: msg,
+      classes: "rounded"
+    });
+}
 function setLocalStorage(data){
     let dados = [];
     dados.push(data);
