@@ -33,3 +33,7 @@ body{
 .progress{
     display: none;
 }
+#frase-id{
+    width: 70px;
+    text-align: center;
+}

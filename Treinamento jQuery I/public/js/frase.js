@@ -1,6 +1,38 @@
-$('#botao-frase').click(buscaFrase);
+$("#botao-frase-id").click(buscaFrase);
+$("#botao-frase").click(buscaFraseAleatoria);
 
-function buscaFrase(){
+function buscaFrase() {
+    let fraseId = $("#frase-id");
+    if(fraseId.val() == null || fraseId.val() == ""){ 
+        mostrarMensagem("Insera um Id valido");
+        fraseId.addClass("borda-vermelha");
+        fraseId.focus();
+        return;
+    }
+
+    fraseId.removeClass("borda-vermelha");
+    $(".progress").show();
+    
+    let idDaFraseBuscada = {
+        id: fraseId.val()
+    }
+    $.get("/frases", idDaFraseBuscada, data => {
+      
+      let frase = $(".frase");
+      frase.text(data.texto);
+      atualizaTamanhoFrase();
+      atualizaTempoInicial(data.tempo);
+      mostrarMensagem("Busca de dados efetuada com sucesso");
+
+    })
+      .fail(() => {
+        mostrarMensagem("Erro ao buscar frase pelo id " + fraseId.val());
+        $(".progress").hide();
+      })
+      .always(() => $(".progress").hide());
+}
+
+function buscaFraseAleatoria(){
     //Poderia ser http://localhost:3000/frases
     $(".progress").show();
     $.get("/frases", data => {
