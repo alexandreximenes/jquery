@@ -34,7 +34,7 @@ function inicializaContadores() {
 function inicializaCronometro() {
     _textarea.one('focus', () => {
         let _tempoRestante = $("#tempo-digitacao").text();
-        ajustaAlturaTextArea();
+        aumentarAlturaTextArea();
         let _tempo = setInterval( () => {
             console.log(_tempoRestante--);
             $("#tempo-digitacao").text(_tempoRestante);
@@ -84,6 +84,8 @@ _textarea.on('input', () => {
 });
 
 
-_textarea.blur( () => console.log("blur") );
+_textarea.blur( () => {
+    diminuirAlturaTextArea();
+});
 
 

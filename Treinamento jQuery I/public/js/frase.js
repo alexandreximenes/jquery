@@ -58,12 +58,6 @@ function buscaFraseAleatoria(){
     .always( () => $('.progress').hide() );
 }
 
-function mostrarMensagem(msg) {
-    M.toast({
-      html: msg,
-      classes: "rounded"
-    });
-}
 function setLocalStorage(data){
     let dados = [];
     dados.push(data);

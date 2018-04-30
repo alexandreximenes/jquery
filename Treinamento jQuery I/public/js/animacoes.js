@@ -10,8 +10,13 @@ function scrollPlacar(){
     }, 3000, scrollH1);
 }
 
-function ajustaAlturaTextArea(){
+function aumentarAlturaTextArea(){
     $(".textarea-digitacao").animate({
         "height" : "130px"
+    },300);
+}
+function diminuirAlturaTextArea() {
+    $('.textarea-digitacao').animate({
+        'height' : '50px'
     },300);
 }

@@ -20,7 +20,7 @@ api.lista = function(req, res) {
 		if(req.query.id) return res.json(frases[req.query.id]);
 
 		res.json(frases);
-	},100);
+	},1500);
 
 };
 
