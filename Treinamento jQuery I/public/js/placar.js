@@ -1,103 +1,57 @@
-$('#botao-placar').click(mostraPlacar);
-$("#botao-sync").click(sincronizarPlacar);
+var tempoScroll = 1000;
 
-function mostraPlacar() {
-  $(".placar").stop().slideToggle(500);
+
+$("#botao-placar").click(mostrarPlacar);
+function mostrarPlacar(){
+    $(".placar").stop().slideToggle(700);
 }
+function inserePlacar() {
+    var corpoTabela = $(".placar").find("tbody");
+    var usuario = prompt('Informe seu nome : ');
+    var numPalavras = $("#contador-palavras").text();
 
-function sincronizarPlacar(){
-  let _placar = []; 
-  let linha = $("tbody>tr");
-
-  // Function EACH do jQuery nao funciona com aero function
-  // ex: linha.each( () => {});
-  linha.each(function(){
-    let usuario = $(this).find('td:nth-child(1)').text();
-    let pontos = $(this).find('td:nth-child(2)').text();
-
-    // Adiciona no array linha
-      let dados = {
-        usuario : usuario,
-        pontos: pontos
-      };
-
-      if(dados.usuario == "" || dados.pontos == "") {
-        console.log('sem dados' + this);
-        return;
-      }else{
-        _placar.push(dados);
-      }
-
-  });
-
-  enviarPlacarParaOServidor(_placar);
-}
-
-function enviarPlacarParaOServidor(_placar) {
-  $(".progress").show();
-
-  //convertendo o array para objeto para enviar para o servidor  
-  var dadosPlacar = {
-    dados: _placar
-  }
-
-  console.log(dadosPlacar);
-
-  $.post("/placar", dadosPlacar, function() {
-    console.log("dados enviados com sucesso");
-    
-  })
-    .fail( () => {
-      mostrarMensagem("erro ao enviar dados do placar para o servidor");
-      $(".progress").hide();
-    })
-    .always( $(".progress").hide() );
-
-}
-
-function insereNoPlacar(){
-    let usuario = prompt("Qual seu nome ? ");
-    let tbody = $('.placar').find("tbody");
-    let numPalavras = $("#contador-palavras").text();
-    let botao_remover = "<a class='botao-remover' href='#'><i class='small material-icons'>delete</i></a>";
-    
     var linha = novaLinha(usuario, numPalavras);
-    linha.find('.botao-remover').click(removeLinha);
+    linha.find(".botao-remover").click(removeLinha);
 
-    //Adiciona no FINAL do corpo da tabela
-    //tbody.append(linha);
+    corpoTabela.append(linha);
 
-    //Adiciona no INICIO do corpo da tabela
-    tbody.prepend(linha);
-
-    $(".placar").slideDown(500);
+    $('.placar').slideDown(500);
     scrollPlacar();
+}
 
+function scrollPlacar(){
+    var posicao = $('.placar').offset().top;
+    $('body').animate({
+        scrollTop : posicao + 'px'
+    },tempoScroll);
 }
 
 function novaLinha(usuario, palavras) {
-  var linha = $("<tr>");
-  
-  var colunaUsuario  =  $("<td>").text(usuario);
-  var colunaPalavras =  $("<td>").text(palavras);
-  var colunaRemover  =  $("<td>");
+    var linha = $("<tr>");
+    var colunaUsuario = $("<td>").text(usuario);
+    var colunaPalavras = $("<td>").text(palavras);
+    var colunaRemover = $("<td>");
 
-  var link = $("<a>").attr("href", "#").addClass("botao-remover");
-  var icone = $("<i>").addClass("small").addClass("material-icons").text("delete");
+    var link = $("<a>").addClass("botao-remover").attr("href", "#");
+    var icone = $("<i>").addClass("small").addClass("material-icons").text("delete");
 
-  link.append(icone);
-  colunaRemover.append(link);
-  linha.append(colunaUsuario);
-  linha.append(colunaPalavras);
-  linha.append(colunaRemover);
-  
-  return linha;
+    link.append(icone);
+
+    colunaRemover.append(link);
+
+    linha.append(colunaUsuario);
+    linha.append(colunaPalavras);
+    linha.append(colunaRemover);
+
+    return linha;
 }
 
-function removeLinha(){
+function removeLinha() {
     event.preventDefault();
-    $(this).parent().parent().remove();
-
+    var linha = $(this).parent().parent();
+    var tempo = 1000;
+    linha.fadeOut(tempo);
+    setTimeout(function(){
+        linha.remove();
+    },tempo);
 }
-
-

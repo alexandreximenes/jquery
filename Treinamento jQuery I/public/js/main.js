@@ -1,91 +1,90 @@
-let _tempoInicial = $("#tempo-digitacao").text();
-let _textarea = $(".textarea-digitacao");    
+var tempoInicial = $("#tempo-digitacao").text();
+var campo = $(".campo-digitacao");
 
-//ECMA5
-$(  () => {
-        atualizaTamanhoFrase();
-        inicializaContadores();
-        inicializaCronometro();
-        $("#botao-reiniciar").click(reiniciaJogo);
+$(function() {
+    atualizaTamanhoFrase();
+    inicializaContadores();
+    inicializaCronometro();
+    inicializaMarcadores();
+    $("#botao-reiniciar").click(reiniciaJogo);
 });
 
 function atualizaTamanhoFrase() {
-    let _frase = $(".frase").text();
-    let _numPalavras = _frase.split(" ").length;
-    let _tamanhoFrase = $("#tamanho-frase").text(_numPalavras);
-}
+    var frase = $(".frase").text();
+    var numPalavras  = frase.split(" ").length;
+    var tamanhoFrase = $("#tamanho-frase");
 
-function atualizaTempoInicial(tempo){
-    $('#tempo-digitacao').text(tempo);
+    tamanhoFrase.text(numPalavras);
 }
 
 function inicializaContadores() {
-    // evento de caractere e palavras
-    _textarea.on('input', () => {
-        let _textoDigitado = _textarea.val();
-        let _qtdPalavras = _textoDigitado.split(/\S+/).length -1;
-        $("#contador-palavras").text(_qtdPalavras);
-        $("#contador-caracteres").text(_textoDigitado.length);
+    campo.on("input", function() {
+        var conteudo = campo.val();
 
+        var qtdPalavras = conteudo.split(/\S+/).length - 1;
+        $("#contador-palavras").text(qtdPalavras);
+
+        var qtdCaracteres = conteudo.length;
+        $("#contador-caracteres").text(qtdCaracteres);
     });
 }
 
-//Cronometro 
-function inicializaCronometro() {
-    _textarea.one('focus', () => {
-        let _tempoRestante = $("#tempo-digitacao").text();
-        aumentarAlturaTextArea();
-        let _tempo = setInterval( () => {
-            console.log(_tempoRestante--);
-            $("#tempo-digitacao").text(_tempoRestante);
-            if(_tempoRestante < 1) {
-                _textarea.attr("disabled", true); 
-                clearInterval(_tempo);
-                //_textarea.css('background-color', 'lightgray');
-                _textarea.addClass('campo-desativado');
-                //_textarea.toggleClass("campo-desativado");
-                insereNoPlacar();
-            }
-        }, 1000);
+function inicializaMarcadores() {
+    var frase = $(".frase").text();
+    campo.on("input", function() {
+        var digitado = campo.val();
+        var comparavel = frase.substr(0, digitado.length);
 
-        $('#botao-frase').click( () => {
-            clearInterval(_tempo);
-            inicializaCronometro();
-        });
-    });    
+        if (digitado == comparavel) {
+            campo.addClass("borda-verde");
+            campo.removeClass("borda-vermelha");
+        } else {
+            campo.addClass("borda-vermelha");
+            campo.removeClass("borda-verde");
+        }
+    });
+}
+
+function inicializaCronometro() {
+    var tempoRestante = $("#tempo-digitacao").text();
+    campo.one("focus", function() {
+    	var cronometroID = setInterval(function() {
+    		tempoRestante--;
+    		$("#tempo-digitacao").text(tempoRestante);
+    		if (tempoRestante < 1) {
+                clearInterval(cronometroID);
+                finalizaJogo();
+    		}
+    	}, 1000);
+    });
+}
+
+function finalizaJogo() {
+    campo.attr("disabled", true);
+    campo.toggleClass("campo-desativado");
+    inserePlacar();
 }
 
 function reiniciaJogo() {
-    _textarea.attr("disabled", false);
-    _textarea.val("");
+    campo.attr("disabled", false);
+    campo.val("");
     $("#contador-palavras").text(0);
     $("#contador-caracteres").text(0);
-    $("#tempo-digitacao").text();
+    $("#tempo-digitacao").text(tempoInicial);
     inicializaCronometro();
-    //_textarea.toggleClass("campo-desativado");
-     _textarea.removeClass("campo-desativado");
-     _textarea.removeClass("borda-vermelha");
-     _textarea.removeClass("borda-verde");
-     scrollH1();
+    campo.toggleClass("campo-desativado");
+    campo.removeClass("borda-vermelha");
+    campo.removeClass("borda-verde");
+
+ 
+    var posicao = $('.frase').offset().top;
+    $('body').animate({
+        scrollTop : posicao +'px'
+    },600
+    ,'swing'
+    ,function(){
+        $('#botao-reiniciar').focus();
+    });
+
+
 }
-
-_textarea.on('input', () => {
-    let frase = $('.frase').text();
-    let digitado = _textarea.val();
-    //let comparavel = frase.substr(0, digitado.length);
-    
-    if ( frase.startsWith(digitado) ){
-      _textarea.removeClass("borda-vermelha");
-      _textarea.addClass("borda-verde");
-    } else {
-      _textarea.addClass("borda-vermelha");
-      _textarea.removeClass("borda-verde");
-    }
-});
-
-
-_textarea.blur( () => {
-    diminuirAlturaTextArea();
-});
-
-
