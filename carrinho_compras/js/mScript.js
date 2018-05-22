@@ -8,10 +8,44 @@ let mTotal = valorTotal.reduce((total, i) => total + i, 0.0);
 console.log("com Vanila Javascript : " + mTotal);
 
 
-$(function () {
-    function totaliza(){
+$(function() {
+  totaliza();
+
+  $("#desfazer").click(desfazer);
+
+  $(".remover").click(removeItem);
+});
+
+    function desfazer(e){
+        e.preventDefault();
+        var trs = $('tr:visible');
+        trs.removeClass('recuperado');
+
+        trs = $('tr:hidden');
+        trs.addClass('recuperado');
+        
+        descataTr(trs);
+
+        trs.show();
+        
+        totaliza();
+        
+    }
+
+    function descataTr(trs){
+        var time = setInterval(() => {
+          trs.toggleClass("recuperado");
+        }, 1000);
+
+        setTimeout(() => {
+          clearTimeout(time);
+          trs.removeClass("recuperado");
+        }, 3000);
+    }
+
+    function totaliza() {
         let total = 0;
-        let itemTotal = $('.item-total');
+        let itemTotal = $('.item-total:visible');
 
         for (var i = 0; i < itemTotal.length; i++) {
             total += parseFloat($(itemTotal[i]).text());
@@ -22,38 +56,35 @@ $(function () {
         $('#valor-total').text(total);
         $('#quantidade-de-itens').text(itemTotal.length);
     }
+    
+    function removeItem(e){
 
-    $('.remover').click(function(e) {
         e.preventDefault();
-        
-        var novaQuantidade = parseInt($("#quantidade-de-itens").text()) -1;
 
-        if(novaQuantidade >= 0) $("#quantidade-de-itens").text(novaQuantidade);
+        var novaQuantidade = parseInt($("#quantidade-de-itens").text()) - 1;
+
+        if (novaQuantidade >= 0) $("#quantidade-de-itens").text(novaQuantidade);
 
         var self = $(this);
-        var tr = self.closest('tr');        
+        var tr = self.closest('tr');
         var valor = tr.find('.item-total').text();
+        tr.hide();
 
-        //ou poderia ser diretamente 
-        var oValor = $(this).closest('tr').find('.item-total').text();
+        totaliza();
+    }
 
-        tr.remove();
+        // //ou poderia ser diretamente 
+        // var oValor = $(this).closest('tr').find('.item-total').text();
 
-        var valorTotal = ($("#valor-total").text() - valor);
 
-        $("#valor-total").text(valorTotal);
+        // var valorTotal = ($("#valor-total").text() - valor);
+
+        // $("#valor-total").text(valorTotal);
         
-        if (novaQuantidade == 0) $("#valor-total").text(0);
+        // if (novaQuantidade == 0) $("#valor-total").text(0);
         
-        //LOG
-        console.log(valorTotal + ` - ${valor} = ${valorTotal-valor}`);
+        // //LOG
+        // console.log(valorTotal + ` - ${valor} = ${valorTotal-valor}`);
         
-        
 
 
-    });
-
-    totaliza();
-
-
-});
