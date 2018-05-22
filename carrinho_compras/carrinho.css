@@ -85,3 +85,7 @@ input[type=button] {
 .recuperado{
 	background: #FF0;
 }
+.tr-normal{
+	background: #f5f5f5;
+	transition: 1.0s ease;
+}

@@ -40,7 +40,8 @@ $(function() {
         setTimeout(() => {
           clearTimeout(time);
           trs.removeClass("recuperado");
-        }, 3000);
+          trs.addClass('tr-normal');
+        }, 5000);
     }
 
     function totaliza() {
