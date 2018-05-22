@@ -31,14 +31,23 @@ $(function () {
         if(novaQuantidade >= 0) $("#quantidade-de-itens").text(novaQuantidade);
 
         var self = $(this);
-        var tr = self.closest('tr');
+        var tr = self.closest('tr');        
         var valor = tr.find('.item-total').text();
 
-        var valorTotal = $("#valor-total").text();
-        valorTotal -= valor;
-        $("#valor-total").text(valorTotal);
-        console.log(valorTotal);
+        //ou poderia ser diretamente 
+        var oValor = $(this).closest('tr').find('.item-total').text();
+
         tr.remove();
+
+        var valorTotal = ($("#valor-total").text() - valor);
+
+        $("#valor-total").text(valorTotal);
+        
+        if (novaQuantidade == 0) $("#valor-total").text(0);
+        
+        //LOG
+        console.log(valorTotal + ` - ${valor} = ${valorTotal-valor}`);
+        
         
 
 
